@@ -95,8 +95,6 @@ alias ls='gls --color=auto'
 alias ll='ls -laFh --group-directories-first'
 alias please="sudo"
 alias notes='function _notes() { nvim "+Note $1"; }; _notes'
-alias live="~/Viz-AI/terraform-live"
-alias modules="~/Viz-AI/terraform-modules"
 alias push-upstream='git push --set-upstream origin $(git branch --show-current)'
 alias clean-terragrunt='find . -name ".terraform.lock.hcl" -exec rm -f {} \; && find . -type d -name ".terragrunt-cache" -prune -exec rm -rf {} \;'
 alias aws-profile='echo "Current AWS Profile: $AWS_PROFILE"'
