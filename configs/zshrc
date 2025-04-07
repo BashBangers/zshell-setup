@@ -97,7 +97,6 @@ alias please="sudo"
 alias notes='function _notes() { nvim "+Note $1"; }; _notes'
 alias push-upstream='git push --set-upstream origin $(git branch --show-current)'
 alias clean-terragrunt='find . -name ".terraform.lock.hcl" -exec rm -f {} \; && find . -type d -name ".terragrunt-cache" -prune -exec rm -rf {} \;'
-alias aws-profile='echo "Current AWS Profile: $AWS_PROFILE"'
 
 # Load custom functions
 for f in ~/.zsh/functions/*.zsh; do
