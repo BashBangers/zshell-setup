@@ -1,0 +1,108 @@
+# Zinit Bootstrapping
+if [[ ! -f ~/.zinit/bin/zinit.zsh ]]; then
+  echo "Installing Zinit plugin manager..."
+  mkdir -p ~/.zinit
+  git clone <https://github.com/zdharma-continuum/zinit> ~/.zinit/bin
+fi
+source ~/.zinit/bin/zinit.zsh
+
+# Powerlevel10k Theme
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# Plugin Loading
+zinit ice wait blockf
+zinit light zsh-users/zsh-syntax-highlighting
+
+zinit ice wait lucid
+zinit light zsh-users/zsh-autosuggestions
+
+zinit ice wait
+zinit light Aloxaf/fzf-tab
+
+zinit ice wait lucid
+zinit light junegunn/fzf
+zinit light junegunn/fzf-bin
+
+zinit ice wait lucid
+zinit light Tarrasch/zsh-autoenv
+zinit light mfaerevaag/wd
+
+# OMZ Plugin Snippets
+zinit snippet OMZ::plugins/git/git.plugin.zsh
+zinit snippet OMZ::plugins/aws/aws.plugin.zsh
+zinit snippet OMZ::plugins/docker/docker.plugin.zsh
+zinit snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
+zinit snippet OMZ::plugins/kubectx/kubectx.plugin.zsh
+zinit snippet OMZ::plugins/gh/gh.plugin.zsh
+
+# Completion cache
+zinit ice atinit"mkdir -p ~/.cache/zinit/completions"
+
+# Zsh Enhancements
+autoload -Uz compinit && compinit
+autoload -Uz colors && colors
+
+setopt autocd correct nocaseglob prompt_subst
+setopt inc_append_history share_history
+
+# History search with ↑ / ↓ (prefix-aware)
+autoload -Uz up-line-or-beginning-search
+autoload -Uz down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
+
+# FZF-powered Ctrl+R search
+fzf-history-widget() {
+  BUFFER=$(fc -l 1 | fzf --tac +s --reverse --ansi --preview 'echo {}' --preview-window=up:1)
+  CURSOR=$#BUFFER
+  zle reset-prompt
+}
+zle -N fzf-history-widget
+bindkey '^R' fzf-history-widget
+
+# Word motion / delete
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+bindkey "^[f" forward-word
+bindkey "^[b" backward-word
+bindkey "^[^?" backward-kill-word
+autoload -U select-word-style
+select-word-style bash
+
+# Env
+export GOPATH="$HOME/go"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
+# Prompt
+function aws_prompt() {
+  [[ -n $AWS_PROFILE ]] && echo "AWS: ($AWS_PROFILE)"
+}
+function git_prompt() {
+  local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  [[ -n $branch ]] && echo " $branch"
+}
+PROMPT='%F{cyan}%n@%m%f %F{blue}%~%f $(aws_prompt) $(git_prompt) %# '
+
+# Aliases
+# Use gls (GNU ls) instead of BSD ls on macOS
+alias ls='gls --color=auto'
+alias ll='ls -laFh --group-directories-first'
+alias please="sudo"
+alias notes='function _notes() { nvim "+Note $1"; }; _notes'
+alias live="~/Viz-AI/terraform-live"
+alias modules="~/Viz-AI/terraform-modules"
+alias push-upstream='git push --set-upstream origin $(git branch --show-current)'
+alias clean-terragrunt='find . -name ".terraform.lock.hcl" -exec rm -f {} \; && find . -type d -name ".terragrunt-cache" -prune -exec rm -rf {} \;'
+alias aws-profile='echo "Current AWS Profile: $AWS_PROFILE"'
+
+# Load custom functions
+for f in ~/.zsh/functions/*.zsh; do
+  source "$f"
+done
+
