@@ -1,19 +1,34 @@
-# ⚙️ Zsh Shell Setup
 
-A developer-focused Zsh environment powered by Zinit, Powerlevel10k, OMZ plugins, and productivity-boosting aliases and functions.
+# ⚙️ Zsh Developer Shell
+
+A modern Zsh shell setup tailored for productivity, cloud workflows, and clean terminal ergonomics — powered by Zinit, Powerlevel10k, Oh My Zsh plugins, and custom functions.
 
 ---
 
-## 🚀 What This Setup Includes
+## 🚀 Why Use This Setup?
 
-- Zinit plugin manager with lazy loading
-- Powerlevel10k theme for a beautiful, fast prompt
-- OMZ plugins (Git, AWS, Docker, K8s, GH)
-- Autosuggestions, syntax highlighting, and FZF-enhanced history
-- Custom aliases and shell functions
-- Modular config with `~/.zsh/functions/`
-- Fully scriptable installer (`setup_zsh.sh`)
-- AWS-aware profile checker with STS identity lookup
+This shell config turns your terminal into a **developer cockpit**:
+
+- 🔁 **Speed**: Fast startup with lazy-loaded plugins via Zinit  
+- 🌈 **Visual Clarity**: Powerlevel10k with AWS + Git prompt awareness  
+- 🧠 **Smarts**: Autocomplete, syntax highlighting, and fuzzy recall  
+- 🛠️ **Workflow Boosters**: Git, Terraform, AWS, Docker, K8s, and GH aliases  
+- 🧩 **Modular & Hackable**: Custom shell functions under `~/.zsh/functions/`
+
+---
+
+## 📦 What’s Inside?
+
+- **Plugin Manager**: [Zinit](https://github.com/zdharma-continuum/zinit) with lazy-loading
+- **Prompt Theme**: Powerlevel10k, pre-configured
+- **Plugins via OMZ**: `git`, `aws`, `docker`, `kubectl`, `gh`
+- **Core Enhancements**:
+  - `zsh-autosuggestions` for inline suggestions
+  - `zsh-syntax-highlighting` for live feedback
+  - `fzf` for fuzzy history and tab-completion
+- **Custom Tools**:
+  - `aws-profile`: Show current STS identity
+  - `please`, `push-upstream`, `notes`, `clean-terragrunt`: Developer aliases
 
 ---
 
@@ -28,199 +43,102 @@ chmod +x setup_zsh.sh
 
 ---
 
-## 🔐 AWS Identity Checker
+## 🔐 AWS Identity Utility
 
-The `aws-profile` function shows your current caller identity using `aws sts get-caller-identity`.
-
-### ✅ Usage
+Use `aws-profile` to inspect your AWS caller identity.
 
 ```bash
-aws-profile                 # Uses current AWS_PROFILE or default
-aws-profile --profile dev  # Uses named profile 'dev'
+aws-profile                 # Uses current AWS_PROFILE
+aws-profile --profile dev  # Uses specified named profile
 ```
 
-If the session is expired or invalid, it will suggest re-login via AWS SSO.
+It will alert if your credentials are expired or invalid and prompt re-auth via AWS SSO.
 
 ---
 
-## 🧠 Zsh Cheat Sheet (Dev-Centric)
+## 🧠 Zsh Productivity Cheat Sheet
 
-### 🔍 History Search & Recall
+### 🔍 History Navigation
 
-| Key / Command   | Description                                   |
-|-----------------|-----------------------------------------------|
-| ↑ / ↓           | Prefix-aware history search                   |
-| `Ctrl + R`      | FZF fuzzy history with preview                |
-| `history`       | Show history                                  |
-| `!n`            | Run history entry number `n`                  |
-| `!!`            | Rerun previous command                        |
-| `!string`       | Run last command that starts with `string`    |
+| Key / Command | Action |
+|---------------|--------|
+| ↑ / ↓         | Prefix-aware recall |
+| `Ctrl + R`    | Fuzzy history search (FZF) |
+| `!!` / `!n` / `!foo` | Re-run previous, numbered, or matching command |
 
----
+### 🗂 Word & Line Editing
 
-### 🗂 Word Navigation & Editing
+| Key           | Action |
+|---------------|--------|
+| `⌥ ← / →`     | Move by word |
+| `⌥ ⌫` / `Ctrl+W` | Delete word backward |
+| `Ctrl+A/E`    | Line start / end |
+| `Ctrl+U/K`    | Delete before / after cursor |
 
-| Key Binding     | Description                                   |
-|-----------------|-----------------------------------------------|
-| `⌥ ← / ⌥ →`     | Move by word (left/right)                     |
-| `Esc + b / f`   | Backward/forward one word                     |
-| `⌥ ⌫`           | Delete previous word                          |
-| `Ctrl + W`      | Delete word backward                          |
-| `Ctrl + U/K`    | Delete line before/after cursor               |
-| `Ctrl + A/E`    | Move to start/end of line                     |
+### 📁 Directory Shortcuts
 
----
-
-### 🧱 Directory Navigation
-
-| Command         | Description                                   |
-|-----------------|-----------------------------------------------|
-| `cd`            | Change directory                              |
-| `cd -`          | Switch to previous directory                  |
-| `..`, `...`     | Go up 1 or 2 levels (if aliases defined)      |
-| `wd add x`      | Save current dir as `x` (via zsh-wd)          |
-| `wd x`          | Jump to saved location                        |
-
----
+| Command       | Description |
+|---------------|-------------|
+| `cd`, `cd -`  | Standard and previous dir |
+| `..`, `...`   | Go up 1 or 2 levels (via alias) |
+| `wd add dev`  | Save current dir as `dev` |
+| `wd dev`      | Jump to saved dir (via zsh-wd) |
 
 ### 💬 Aliases & Functions
 
-| Alias / Function     | Description                               |
-|----------------------|-------------------------------------------|
-| `ll`                 | `ls -laFh --group-directories-first`      |
-| `please`             | Shortcut for `sudo`                       |
-| `notes foo`          | Open Neovim and run `:Note foo`           |
-| `push-upstream`      | Git push + set upstream                   |
-| `aws-profile`        | Show AWS STS identity, with profile support |
-| `clean-terragrunt`   | Clean Terraform lock and cache            |
+| Alias / Func       | Action |
+|--------------------|--------|
+| `ll`               | `ls -laFh --group-directories-first` |
+| `please`           | Shortcut for `sudo` |
+| `notes foo`        | Launch Neovim to `:Note foo` |
+| `push-upstream`    | Git push and set upstream |
+| `clean-terragrunt` | Remove `.terraform.lock.hcl` and `.terragrunt-cache` |
+| `aws-profile`      | Show AWS caller identity |
 
----
+### 🌐 Prompt Details
 
-### 🌐 Prompt Status
-
-- AWS profile shown as `AWS: (profile)`
-- Git branch shown as ` branch` if in Git repo
-- Colored prompt via Powerlevel10k
-
----
+- Git branch shown with ` branch`
+- AWS profile displayed as `AWS: (profile)`
+- Prompt is theme-aware via Powerlevel10k
 
 ### 🔌 Plugin Highlights
 
-| Plugin                  | Purpose                                 |
-|-------------------------|-----------------------------------------|
-| zsh-autosuggestions     | Inline command suggestions              |
-| zsh-syntax-highlighting | Colorful syntax feedback                |
-| fzf + fzf-tab           | Interactive fuzzy search and tab UI     |
-| OMZ git/aws/docker/etc. | OMZ plugin snippets                     |
-| Powerlevel10k           | Fast and feature-rich prompt            |
+| Plugin                  | Purpose |
+|-------------------------|---------|
+| `zsh-autosuggestions`   | Inline suggestions |
+| `zsh-syntax-highlighting` | Live syntax feedback |
+| `fzf` + `fzf-tab`       | Fuzzy finder UI |
+| OMZ plugins             | Git, Docker, AWS, etc. |
+| Powerlevel10k           | Responsive and rich prompt |
+
+### 🧩 Shell Optimizations
+
+| Feature         | Setting |
+|-----------------|---------|
+| Autoenv         | Load `.env` on `cd` |
+| Shared history  | `setopt share_history` |
+| Auto-correct    | `setopt correct` |
+| Key introspect  | `bindkey -P` |
+| Shell config    | `source ~/.zshrc` or `exec zsh` |
 
 ---
 
-### ⚙️ Miscellaneous
+## ⚙️ Configuration Layout
 
-| Command / Key    | Description                                   |
-|------------------|-----------------------------------------------|
-| `source ~/.zshrc`| Reload config                                 |
-| `exec zsh`       | Restart current shell                         |
-| `bindkey -P`     | List active key bindings                      |
-| `setopt`         | List current shell options                    |
+Your shell config is modular:
 
-=======
-## 🧠 Zsh Cheat Sheet (Dev-Centric)
-
-### 🔍 History Search & Recall
-
-| Key / Command   | Description                                   |
-|-----------------|-----------------------------------------------|
-| ↑ / ↓           | Prefix-aware history search                   |
-| `Ctrl + R`      | FZF fuzzy history with preview                |
-| `history`       | Show history                                  |
-| `!n`            | Run history entry number `n`                  |
-| `!!`            | Rerun previous command                        |
-| `!string`       | Run last command that starts with `string`    |
+```
+~/.zshrc                       # Primary config
+~/.zsh/functions/*.zsh         # Custom functions
+~/.zsh/p10k.zsh                # Powerlevel10k theme config
+~/.zinit                       # Plugin manager
+```
 
 ---
 
-### 🗂 Word Navigation & Editing
+## 🧼 Cleanup Instructions
 
-| Key Binding     | Description                                   |
-|-----------------|-----------------------------------------------|
-| `⌥ ← / ⌥ →`     | Move by word (left/right)                     |
-| `Esc + b / f`   | Backward/forward one word                     |
-| `⌥ ⌫`           | Delete previous word                          |
-| `Ctrl + W`      | Delete word backward                          |
-| `Ctrl + U/K`    | Delete line before/after cursor               |
-| `Ctrl + A/E`    | Move to start/end of line                     |
-
----
-
-### 🧱 Directory Navigation
-
-| Command         | Description                                   |
-|-----------------|-----------------------------------------------|
-| `cd`            | Change directory                              |
-| `cd -`          | Switch to previous directory                  |
-| `..`, `...`     | Go up 1 or 2 levels (if aliases defined)      |
-| `wd add x`      | Save current dir as `x` (via zsh-wd)          |
-| `wd x`          | Jump to saved location                        |
-
----
-
-### 💬 Aliases & Functions
-
-| Alias / Function     | Description                               |
-|----------------------|-------------------------------------------|
-| `ll`                 | `ls -laFh --group-directories-first`      |
-| `please`             | Shortcut for `sudo`                       |
-| `notes foo`          | Open Neovim and run `:Note foo`           |
-| `push-upstream`      | Git push + set upstream                   |
-| `aws-profile`        | Echo current AWS profile                  |
-| `clean-terragrunt`   | Clean Terraform lock and cache            |
-
----
-
-### 🌐 Prompt Status
-
-- AWS profile shown as `AWS: (profile)`
-- Git branch shown as ` branch` if in Git repo
-- Colored prompt via Powerlevel10k
-
----
-
-### 🔌 Plugin Highlights
-
-| Plugin                  | Purpose                                 |
-|-------------------------|-----------------------------------------|
-| zsh-autosuggestions     | Inline command suggestions              |
-| zsh-syntax-highlighting | Colorful syntax feedback                |
-| fzf + fzf-tab           | Interactive fuzzy search and tab UI     |
-| OMZ git/aws/docker/etc. | OMZ plugin snippets                     |
-| Powerlevel10k           | Fast and feature-rich prompt            |
-
----
-
-### 🔁 Terminal Multipliers
-
-| Feature         | Shortcut / Usage                              |
-|-----------------|------------------------------------------------|
-| Autoenv         | Load `.env` when `cd` into folder              |
-| Shared history  | `setopt share_history`                        |
-| Auto-correct    | `setopt correct`                              |
-
----
-
-### ⚙️ Miscellaneous
-
-| Command / Key    | Description                                   |
-|------------------|-----------------------------------------------|
-| `source ~/.zshrc`| Reload config                                 |
-| `exec zsh`       | Restart current shell                         |
-| `bindkey -P`     | List active key bindings                      |
-| `setopt`         | List current shell options                    |
-
----
-
-## 🧼 Cleanup
+To fully remove the setup:
 
 ```bash
 rm -rf ~/.zshrc ~/.zsh ~/.zinit ~/.p10k.zsh
