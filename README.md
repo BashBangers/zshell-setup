@@ -1,4 +1,3 @@
-
 # ⚙️ Zsh Developer Shell
 
 A modern Zsh shell setup tailored for productivity, cloud workflows, and clean terminal ergonomics — powered by Zinit, Powerlevel10k, Oh My Zsh plugins, and custom functions.
@@ -120,6 +119,25 @@ It will alert if your credentials are expired or invalid and prompt re-auth via 
 | Auto-correct    | `setopt correct` |
 | Key introspect  | `bindkey -P` |
 | Shell config    | `source ~/.zshrc` or `exec zsh` |
+
+---
+
+## 🛠️ Troubleshooting
+
+### 🐛 `gh.plugin.zsh: no such file or directory: _gh`
+
+If you see this error:
+```
+/Users/yourname/.zinit/snippets/OMZ::plugins--gh/gh.plugin.zsh:14: no such file or directory: /Users/yourname/.cache/zinit/completions/_gh
+```
+
+This means the GitHub CLI completion file is missing. Fix it with this one-liner:
+
+```bash
+mkdir -p ~/.cache/zinit/completions && gh completion -s zsh > ~/.cache/zinit/completions/_gh
+```
+
+Then restart your terminal.
 
 ---
 
