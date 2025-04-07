@@ -1,43 +1,22 @@
 # ⚙️ Zsh Shell Setup
 
-A modern Zsh environment installer for developers, built with Zinit, OMZ plugins, Powerlevel10k, and productivity-focused aliases, prompts, and functions.
+A developer-focused Zsh environment powered by Zinit, Powerlevel10k, OMZ plugins, and productivity-boosting aliases and functions.
 
-## 🚀 What This Script Does
+---
 
-The `setup_zsh.sh` script:
+## 🚀 What This Setup Includes
 
-- ✅ Installs required CLI tools on macOS or Ubuntu  
-- ✅ Sets Zsh as your default shell  
-- ✅ Bootstraps Zinit plugin manager  
-- ✅ Copies `.zshrc` and modular config from `configs/` to `~/.zshrc` and `~/.zsh/`  
-- ✅ Installs Powerlevel10k theme with a default config  
-- ✅ Loads plugins including:  
-  - `fzf`, `fzf-tab`, syntax highlighting, autosuggestions  
-  - OMZ plugins: `git`, `aws`, `kubectl`, `gh`, `docker`, `kubectx`  
-- ✅ Triggers Zinit to install all plugins/snippets during setup  
-- ✅ Prepares custom functions under `~/.zsh/functions/`
+- Zinit plugin manager with lazy loading
+- Powerlevel10k theme for a beautiful, fast prompt
+- OMZ plugins (Git, AWS, Docker, K8s, GH)
+- Autosuggestions, syntax highlighting, and FZF-enhanced history
+- Custom aliases and shell functions
+- Modular config with `~/.zsh/functions/`
+- Fully scriptable installer (`setup_zsh.sh`)
 
-## 📁 Folder Structure
+---
 
-zshell-setup/  
-├── setup_zsh.sh  
-└── configs/  
-  ├── zshrc  
-  └── zsh/  
-    └── functions/  
-      └── <your_custom_functions>.zsh  
-
-## 🧰 Requirements
-
-| Tool         | macOS Command              | Ubuntu Command                     |
-|--------------|----------------------------|-------------------------------------|
-| Zsh          | `brew install zsh`         | `sudo apt install zsh`             |
-| Git          | `brew install git`         | `sudo apt install git`             |
-| Fzf          | `brew install fzf`         | `sudo apt install fzf`             |
-| GNU Coreutils| `brew install coreutils`   | Already included (Ubuntu)          |
-| Other Tools  | `bat`, `exa`, `ripgrep`, `gh`, `awscli`, `terraform`, `pyenv`, `neovim` |
-
-## 🛠️ Setup Instructions
+## 🛠️ Installation
 
 ```bash
 git clone https://github.com/your-user/zshell-setup.git
@@ -46,53 +25,101 @@ chmod +x setup_zsh.sh
 ./setup_zsh.sh
 ```
 
-💡 Restart your terminal or run `exec zsh` to apply changes.
+---
 
-## 🔐 Included Plugins & Features
+## 🧠 Zsh Cheat Sheet (Dev-Centric)
 
-- Zinit: Plugin/snippet manager  
-- Powerlevel10k: Fast and customizable prompt  
-- fzf-tab: Better tab completion UI  
-- fzf: Fuzzy history search (Ctrl+R)  
-- zsh-autosuggestions: Inline autosuggests  
-- zsh-syntax-highlighting: Colorful command line  
-- OMZ Plugins: `git`, `aws`, `docker`, `kubectl`, `gh`, `kubectx`  
-- Aliases & Functions: Includes `notes`, `push-upstream`, `clean-terragrunt`
+### 🔍 History Search & Recall
 
-## ⌨️ Zsh Cheat Sheet
+| Key / Command   | Description                                   |
+|-----------------|-----------------------------------------------|
+| ↑ / ↓           | Prefix-aware history search                   |
+| `Ctrl + R`      | FZF fuzzy history with preview                |
+| `history`       | Show history                                  |
+| `!n`            | Run history entry number `n`                  |
+| `!!`            | Rerun previous command                        |
+| `!string`       | Run last command that starts with `string`    |
 
-### 🔍 History & Search
+---
 
-| Key        | Action                     |
-|------------|----------------------------|
-| ↑ / ↓      | Search history with prefix |
-| Ctrl+R     | FZF fuzzy history search   |
+### 🗂 Word Navigation & Editing
 
-### 🗂 Word Navigation
+| Key Binding     | Description                                   |
+|-----------------|-----------------------------------------------|
+| `⌥ ← / ⌥ →`     | Move by word (left/right)                     |
+| `Esc + b / f`   | Backward/forward one word                     |
+| `⌥ ⌫`           | Delete previous word                          |
+| `Ctrl + W`      | Delete word backward                          |
+| `Ctrl + U/K`    | Delete line before/after cursor               |
+| `Ctrl + A/E`    | Move to start/end of line                     |
 
-| Key        | Action                      |
-|------------|-----------------------------|
-| ⌥← / ⌥→    | Backward / forward word     |
-| Esc + b/f  | Same as above               |
-| ⌥⌫        | Delete word backward        |
+---
 
-### 🌍 Prompt Info
+### 🧱 Directory Navigation
 
-| Feature        | Shown When             |
-|----------------|------------------------|
-| AWS: (profile) | If AWS_PROFILE is set |
-|  branch       | If inside a Git repo   |
+| Command         | Description                                   |
+|-----------------|-----------------------------------------------|
+| `cd`            | Change directory                              |
+| `cd -`          | Switch to previous directory                  |
+| `..`, `...`     | Go up 1 or 2 levels (if aliases defined)      |
+| `wd add x`      | Save current dir as `x` (via zsh-wd)          |
+| `wd x`          | Jump to saved location                        |
 
-### 📋 Aliases
+---
 
-| Alias             | Description                              |
-|-------------------|------------------------------------------|
-| ll                | ls -laFh --group-directories-first       |
-| please            | sudo shortcut                            |
-| notes foo         | Opens nvim with :Note foo                |
-| push-upstream     | Push current Git branch with upstream    |
-| aws-profile       | Echo current AWS_PROFILE                 |
-| clean-terragrunt  | Removes .terraform locks and cache       |
+### 💬 Aliases & Functions
+
+| Alias / Function     | Description                               |
+|----------------------|-------------------------------------------|
+| `ll`                 | `ls -laFh --group-directories-first`      |
+| `please`             | Shortcut for `sudo`                       |
+| `notes foo`          | Open Neovim and run `:Note foo`           |
+| `push-upstream`      | Git push + set upstream                   |
+| `aws-profile`        | Echo current AWS profile                  |
+| `clean-terragrunt`   | Clean Terraform lock and cache            |
+
+---
+
+### 🌐 Prompt Status
+
+- AWS profile shown as `AWS: (profile)`
+- Git branch shown as ` branch` if in Git repo
+- Colored prompt via Powerlevel10k
+
+---
+
+### 🔌 Plugin Highlights
+
+| Plugin                  | Purpose                                 |
+|-------------------------|-----------------------------------------|
+| zsh-autosuggestions     | Inline command suggestions              |
+| zsh-syntax-highlighting | Colorful syntax feedback                |
+| fzf + fzf-tab           | Interactive fuzzy search and tab UI     |
+| OMZ git/aws/docker/etc. | OMZ plugin snippets                     |
+| Powerlevel10k           | Fast and feature-rich prompt            |
+
+---
+
+### 🔁 Terminal Multipliers
+
+| Feature         | Shortcut / Usage                              |
+|-----------------|------------------------------------------------|
+| Autoenv         | Load `.env` when `cd` into folder              |
+| Shared history  | `setopt share_history`                        |
+| Auto-correct    | `setopt correct`                              |
+
+---
+
+### ⚙️ Miscellaneous
+
+| Command / Key    | Description                                   |
+|------------------|-----------------------------------------------|
+| `source ~/.zshrc`| Reload config                                 |
+| `exec zsh`       | Restart current shell                         |
+| `bindkey -P`     | List active key bindings                      |
+| `setopt`         | List current shell options                    |
+
+---
 
 ## 🧼 Cleanup
 
@@ -100,52 +127,8 @@ chmod +x setup_zsh.sh
 rm -rf ~/.zshrc ~/.zsh ~/.zinit ~/.p10k.zsh
 ```
 
+---
+
 ## 📜 License
 
 MIT License
-
----
-
-## 🔄 Updating Your Zsh Environment
-
-Once installed, you can update all packages and plugins with a single command:
-
-### ✅ Usage
-
-```bash
-update_zsh
-```
-
-This function:
-
-- Updates Homebrew or Apt packages depending on your OS
-- Updates Zinit itself
-- Updates all Zinit plugins and OMZ snippets
-
-### 🧩 Function Source
-
-The `update_zsh()` function is defined in `~/.zsh/functions/update_zsh.zsh`:
-
-```zsh
-update_zsh() {
-  echo "🔄 Updating system packages..."
-
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    if command -v brew &>/dev/null; then
-      brew update && brew upgrade
-    else
-      echo "⚠️ Homebrew not found."
-    fi
-  elif [[ -f /etc/lsb-release ]]; then
-    sudo apt update && sudo apt upgrade -y
-  else
-    echo "❌ Unsupported OS for system package updates."
-    return 1
-  fi
-
-  echo "🔄 Updating Zinit and plugins..."
-  zsh -i -c "zinit self-update && zinit update --all"
-
-  echo "✅ Zsh environment fully updated."
-}
-```
