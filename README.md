@@ -103,3 +103,49 @@ rm -rf ~/.zshrc ~/.zsh ~/.zinit ~/.p10k.zsh
 ## 📜 License
 
 MIT License
+
+---
+
+## 🔄 Updating Your Zsh Environment
+
+Once installed, you can update all packages and plugins with a single command:
+
+### ✅ Usage
+
+```bash
+update_zsh
+```
+
+This function:
+
+- Updates Homebrew or Apt packages depending on your OS
+- Updates Zinit itself
+- Updates all Zinit plugins and OMZ snippets
+
+### 🧩 Function Source
+
+The `update_zsh()` function is defined in `~/.zsh/functions/update_zsh.zsh`:
+
+```zsh
+update_zsh() {
+  echo "🔄 Updating system packages..."
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    if command -v brew &>/dev/null; then
+      brew update && brew upgrade
+    else
+      echo "⚠️ Homebrew not found."
+    fi
+  elif [[ -f /etc/lsb-release ]]; then
+    sudo apt update && sudo apt upgrade -y
+  else
+    echo "❌ Unsupported OS for system package updates."
+    return 1
+  fi
+
+  echo "🔄 Updating Zinit and plugins..."
+  zsh -i -c "zinit self-update && zinit update --all"
+
+  echo "✅ Zsh environment fully updated."
+}
+```
