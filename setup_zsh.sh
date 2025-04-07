@@ -39,12 +39,16 @@ install_dependencies() {
   log_info "Installing CLI tools..."
 
   if [[ "$OS" == "macOS" ]]; then
-    brew update
-    brew install zsh git fzf coreutils gnu-sed gnupg gawk fd ripgrep bat exa pyenv neovim terraform awscli gh
+    brew update || log_warn "brew update failed"
+
+    for pkg in zsh git fzf coreutils gnu-sed gnupg gawk fd ripgrep bat eza pyenv neovim terraform awscli gh; do
+      brew install "$pkg" || log_warn "Failed to install $pkg"
+    done
+
   else
-    sudo apt update
+    sudo apt update || log_warn "apt update failed"
     sudo apt install -y \
-      zsh git fzf coreutils sed gnupg gawk fd-find ripgrep bat exa pyenv neovim terraform awscli gh
+      zsh git fzf coreutils sed gnupg gawk fd-find ripgrep bat eza pyenv neovim terraform awscli gh || log_warn "Some packages failed to install"
 
     mkdir -p ~/.local/bin
     ln -sf "$(which fdfind)" ~/.local/bin/fd
@@ -52,7 +56,7 @@ install_dependencies() {
 
   if [[ "$SHELL" != *zsh ]]; then
     log_info "Changing default shell to Zsh..."
-    chsh -s "$(which zsh)"
+    chsh -s "$(which zsh)" || log_warn "Failed to change default shell to zsh"
   fi
 }
 
@@ -61,7 +65,7 @@ install_zinit() {
   if [[ ! -f ~/.zinit/bin/zinit.zsh ]]; then
     log_info "Installing Zinit plugin manager..."
     mkdir -p ~/.zinit
-    git clone https://github.com/zdharma-continuum/zinit ~/.zinit/bin
+    git clone https://github.com/zdharma-continuum/zinit ~/.zinit/bin || log_warn "Failed to clone zinit"
   else
     log_info "Zinit is already installed."
   fi
@@ -70,11 +74,11 @@ install_zinit() {
 # ──────────────────────────────────────────────────────────────────────
 copy_zsh_configs() {
   log_info "Copying .zshrc to home directory..."
-  cp "$ZSHRC_FILE" ~/.zshrc
+  cp "$ZSHRC_FILE" ~/.zshrc || log_warn "Failed to copy .zshrc"
 
   log_info "Copying custom Zsh configs..."
   mkdir -p "$ZSH_TARGET_DIR"
-  cp -R "$ZSH_CUSTOM_DIR/"* "$ZSH_TARGET_DIR/"
+  cp -R "$ZSH_CUSTOM_DIR/"* "$ZSH_TARGET_DIR/" || log_warn "Failed to copy custom Zsh configs"
 
   mkdir -p "$ZSH_TARGET_DIR/functions"
 }
@@ -83,7 +87,7 @@ copy_zsh_configs() {
 setup_powerlevel10k() {
   if [[ ! -f ~/.p10k.zsh ]]; then
     log_info "Installing default Powerlevel10k theme config..."
-    curl -fsSL https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/config/p10k-classic.zsh -o ~/.p10k.zsh
+    curl -fsSL https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/config/p10k-classic.zsh -o ~/.p10k.zsh || log_warn "Failed to download Powerlevel10k config"
   else
     log_info "Powerlevel10k config already exists."
   fi
@@ -92,7 +96,7 @@ setup_powerlevel10k() {
 # ──────────────────────────────────────────────────────────────────────
 validate_plugins() {
   log_info "Running Zsh in headless mode to initialize plugins..."
-  zsh -i -c "source ~/.zshrc; zinit self-update; zinit update --all" || log_warn "Zinit plugin install check had issues."
+  zsh -i -c "source ~/.zshrc; zinit self-update; zinit update --all" || log_warn "Zinit plugin install check had issues"
 }
 
 # ──────────────────────────────────────────────────────────────────────
