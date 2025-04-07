@@ -139,8 +139,6 @@ mkdir -p ~/.cache/zinit/completions && gh completion -s zsh > ~/.cache/zinit/com
 
 Then restart your terminal.
 
-**Optional cleanup:** You can later replace OMZ snippets with native plugin installs for better maintainability.
-
 ---
 
 ## ⚙️ Configuration Layout
