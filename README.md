@@ -1,165 +1,263 @@
-# ⚙️ Zsh Developer Shell
+# 🛠️ Terminal Dev Environment (Neovim + Lazy + Zsh)
 
-A modern Zsh shell setup tailored for productivity, cloud workflows, and clean terminal ergonomics — powered by Zinit, Powerlevel10k, Oh My Zsh plugins, and custom functions.
+A fast, modular, and productive terminal environment optimized for developers and DevSecOps engineers.
 
----
+Includes:
 
-## 🚀 Why Use This Setup?
-
-This shell config turns your terminal into a **developer cockpit**:
-
-- 🔁 **Speed**: Fast startup with lazy-loaded plugins via Zinit  
-- 🌈 **Visual Clarity**: Powerlevel10k with AWS + Git prompt awareness  
-- 🧠 **Smarts**: Autocomplete, syntax highlighting, and fuzzy recall  
-- 🛠️ **Workflow Boosters**: Git, Terraform, AWS, Docker, K8s, and GH aliases  
-- 🧩 **Modular & Hackable**: Custom shell functions under `~/.zsh/functions/`
+- Neovim + Lazy.nvim plugin manager
+- Treesitter, LSP, Completion, Formatting
+- Zsh with aliases/functions
+- Markdown + Mermaid live preview
+- Tooling for JSON, YAML, HCL, Python, Docker, K8s
 
 ---
 
-## 📦 What’s Inside?
+## ✅ Requirements
 
-- **Plugin Manager**: [Zinit](https://github.com/zdharma-continuum/zinit) with lazy-loading
-- **Prompt Theme**: Powerlevel10k, pre-configured
-- **Plugins via OMZ**: `git`, `aws`, `docker`, `kubectl`, `gh`
-- **Core Enhancements**:
-  - `zsh-autosuggestions` for inline suggestions
-  - `zsh-syntax-highlighting` for live feedback
-  - `fzf` for fuzzy history and tab-completion
-- **Custom Tools**:
-  - `aws-profile`: Show current STS identity
-  - `please`, `push-upstream`, `notes`, `clean-terragrunt`: Developer aliases
+| Tool       | macOS Command              | Ubuntu Command                  |
+|------------|----------------------------|----------------------------------|
+| Neovim     | `brew install neovim`      | `sudo apt install neovim`       |
+| Git        | `brew install git`         | `sudo apt install git`          |
+| Node.js    | `brew install node`        | `sudo apt install nodejs npm`   |
+| Python     | `brew install python`      | `sudo apt install python3 python3-pip` |
+| CLI Tools  | `jq`, `yq`, `fzf`, `fd`, `ripgrep`, `gh`, `bat`, `exa`, `terraform`, `lua-language-server` |
+| Markdown   | `npm install -g @mermaid-js/mermaid-cli` (for Mermaid diagrams) |
 
 ---
 
-## 🛠️ Installation
+## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/your-user/zshell-setup.git
-cd zshell-setup
-chmod +x setup_zsh.sh
-./setup_zsh.sh
+git clone https://github.com/your-user/neovim-lazy-devsetup.git
+cd neovim-lazy-devsetup
+chmod +x setup.sh
+./setup.sh
 ```
 
 ---
 
-## 🔐 AWS Identity Utility
+## 📁 Folder Structure
 
-Use `aws-profile` to inspect your AWS caller identity.
-
-```bash
-aws-profile                 # Uses current AWS_PROFILE
-aws-profile --profile dev  # Uses specified named profile
+```
+configs/
+├── init.lua
+└── lua/
+    ├── options.lua
+    ├── config/
+    │   ├── harpoon.lua
+    │   ├── toggleterm.lua
+    │   ├── schemastore.lua
+    │   └── markdown.lua
+    └── lazy-plugins/
+        ├── init.lua
+        └── plugins/
+            ├── lsp.lua
+            ├── ui.lua
+            ├── tools.lua
+            ├── dev.lua
 ```
 
-It will alert if your credentials are expired or invalid and prompt re-auth via AWS SSO.
+---
+
+## 🔌 Plugin Features
+
+- LSP support for Python, YAML, JSON, Bash, Terraform, etc.
+- Treesitter-powered syntax + folding
+- Completion via `nvim-cmp`, snippets via `LuaSnip`
+- Markdown live preview + Mermaid diagram rendering
+- File tree, terminal toggling, fuzzy finder
+- Git integration with status, blame, and diff
+- Harpoon for fast file navigation
+- Autopairs, commenting, and code actions
 
 ---
 
 ## 🧠 Zsh Productivity Cheat Sheet
 
-### 🔍 History Navigation
+📄 **Full Cheatsheet on Notion**:  
+👉 [Zsh Developer Shell Cheat Sheet](https://tangible-hoverfly-cc7.notion.site/Zsh-Developer-Shell-Cheat-Sheet-6ed44c36c3bf432e9939503ab0e54d02)
+
+### 📌 Basic Navigation
+
+| Key | Action |
+| --- | --- |
+| `h/j/k/l` | Move left/down/up/right |
+| `gg` / `G` | Go to start / end of file |
+| `0` / `^` / `$` | Start / first non-blank / end of line |
+| `H` / `M` / `L` | Top / middle / bottom of screen |
+| `Ctrl+u / Ctrl+d` | Half-page up/down |
+| `Ctrl+b / Ctrl+f` | Full-page up/down |
+| `{` / `}` | Prev / next paragraph |
+| `w/W`, `e/E`, `b/B`, `ge/gE` | Word motions |
+
+### 📌 Buffer & Tab Management
+
+| Command | Action |
+| --- | --- |
+| `:e file` | Open file |
+| `:bn / :bp` | Next / previous buffer |
+| `:bd` | Close buffer |
+| `:ls` | List open buffers |
+| `:tabnew file` | New tab |
+| `gt / gT` | Next / previous tab |
+| `:tabclose / :tabonly` | Close current / other tabs |
+
+### 📌 Window Splits
+
+| Command | Action |
+| --- | --- |
+| `:split / :vsplit` | Horizontal / vertical split |
+| `Ctrl+w h/j/k/l` | Move between splits |
+| `Ctrl+w =` | Equalize splits |
+| `Ctrl+w _` | Maximize current split |
+| `Ctrl+w q` | Close split |
+
+### 📌 File Explorer (`nvim-tree`)
+
+| Command | Action |
+| --- | --- |
+| `:NvimTreeToggle` | Toggle file explorer |
+| `:NvimTreeFindFile` | Reveal file in tree |
+| `<leader>e` | Toggle via shortcut |
+
+### 📌 Markdown & Mermaid Preview
+
+| Command | Action |
+| --- | --- |
+| `:MarkdownPreview` | Start preview |
+| `:MarkdownPreviewToggle` | Toggle preview |
+| `<leader>mp` | Shortcut to start preview |
+| `mmdc -i input.mmd -o output.png` | Generate diagram via CLI |
+
+### 📌 Editing & Text
+
+| Command | Action |
+| --- | --- |
+| `i / I` | Insert (cursor / start of line) |
+| `a / A` | Append (after / end of line) |
+| `o / O` | Open new line (below / above) |
+| `x / X` | Delete character (under / before) |
+| `dd / yy` | Delete / yank line |
+| `p / P` | Paste after / before cursor |
+| `u / Ctrl+r` | Undo / redo |
+| `.` | Repeat last action |
+
+### 📌 Search & Replace
+
+| Command | Action |
+| --- | --- |
+| `/pattern` | Search pattern |
+| `n / N` | Next / previous match |
+| `:%s/old/new/g` | Replace all |
+| `:%s/old/new/gc` | Confirm each replacement |
+| `* / #` | Search word under cursor (fwd/bwd) |
+
+### 📌 Save & Quit
+
+| Command | Action |
+| --- | --- |
+| `:w` | Save |
+| `:q / :q!` | Quit / force quit |
+| `:wq / ZZ` | Save and quit |
+
+### 📌 Git Integration
+
+| Command | Action |
+| --- | --- |
+| `:G` | Git status |
+| `:Gcommit` / `:Gpush` / `:Gpull` | Commit / push / pull |
+| `:Gdiffsplit` | View diff |
+| `:Gblame` | Blame current line |
+
+### 📌 LSP & Code Actions
 
 | Key / Command | Action |
-|---------------|--------|
-| ↑ / ↓         | Prefix-aware recall |
-| `Ctrl + R`    | Fuzzy history search (FZF) |
-| `!!` / `!n` / `!foo` | Re-run previous, numbered, or matching command |
+| --- | --- |
+| `:LspInfo` | View LSP status |
+| `K` | Hover docs |
+| `gd / gi / gr` | Go to definition / implementation / references |
+| `<leader>rn` | Rename symbol |
+| `<leader>ca` | Code actions |
 
-### 🗂 Word & Line Editing
+### 📌 Completion & Snippets
 
-| Key           | Action |
-|---------------|--------|
-| `⌥ ← / →`     | Move by word |
-| `⌥ ⌫` / `Ctrl+W` | Delete word backward |
-| `Ctrl+A/E`    | Line start / end |
-| `Ctrl+U/K`    | Delete before / after cursor |
+| Plugin | Functionality |
+| --- | --- |
+| `nvim-cmp` | Autocompletion |
+| `LuaSnip` | Snippet engine |
+| `<Tab>` / `<S-Tab>` | Navigate suggestions |
+| `Copilot` (if enabled) | AI suggestions |
 
-### 📁 Directory Shortcuts
+### 📌 Formatting (`conform.nvim`)
 
-| Command       | Description |
-|---------------|-------------|
-| `cd`, `cd -`  | Standard and previous dir |
-| `..`, `...`   | Go up 1 or 2 levels (via alias) |
-| `wd add dev`  | Save current dir as `dev` |
-| `wd dev`      | Jump to saved dir (via zsh-wd) |
+| Key | Action |
+| --- | --- |
+| `<leader>f` | Format current file |
+| Terraform | `terraform_fmt` |
+| Python | `black` |
+| JSON / YAML | `prettier` |
+| Bash | `shfmt` |
 
-### 💬 Aliases & Functions
+### 📌 Telescope
 
-| Alias / Func       | Action |
-|--------------------|--------|
-| `ll`               | `ls -laFh --group-directories-first` |
-| `please`           | Shortcut for `sudo` |
-| `notes foo`        | Launch Neovim to `:Note foo` |
-| `push-upstream`    | Git push and set upstream |
-| `clean-terragrunt` | Remove `.terraform.lock.hcl` and `.terragrunt-cache` |
-| `aws-profile`      | Show AWS caller identity |
+| Command | Action |
+| --- | --- |
+| `<leader>ff` | Find files |
+| `<leader>fg` | Live grep |
+| `<leader>fb` | Buffers |
+| `<leader>fh` | Help tags |
 
-### 🌐 Prompt Details
+### 📌 Terminal Management (`toggleterm`)
 
-- Git branch shown with ` branch`
-- AWS profile displayed as `AWS: (profile)`
-- Prompt is theme-aware via Powerlevel10k
+| Key | Action |
+| --- | --- |
+| `<leader>t` | Toggle terminal |
+| `Ctrl+\\` then `Ctrl+n` | Exit terminal mode |
+| `:ToggleTerm` | Manually toggle terminal |
 
-### 🔌 Plugin Highlights
+### 📌 Commenting (`vim-commentary`)
 
-| Plugin                  | Purpose |
-|-------------------------|---------|
-| `zsh-autosuggestions`   | Inline suggestions |
-| `zsh-syntax-highlighting` | Live syntax feedback |
-| `fzf` + `fzf-tab`       | Fuzzy finder UI |
-| OMZ plugins             | Git, Docker, AWS, etc. |
-| Powerlevel10k           | Responsive and rich prompt |
+| Command | Action |
+| --- | --- |
+| `gcc` | Toggle line comment |
+| `gc` (Visual) | Toggle selection comment |
 
-### 🧩 Shell Optimizations
+### 📌 Code Folding
 
-| Feature         | Setting |
-|-----------------|---------|
-| Autoenv         | Load `.env` on `cd` |
-| Shared history  | `setopt share_history` |
-| Auto-correct    | `setopt correct` |
-| Key introspect  | `bindkey -P` |
-| Shell config    | `source ~/.zshrc` or `exec zsh` |
+| Command | Action |
+| --- | --- |
+| `za / zA` | Toggle fold |
+| `zo / zO` | Open fold |
+| `zc / zC` | Close fold |
+| `zr / zm` | Open / close all folds |
+
+### 📌 UI & Visuals
+
+| Plugin | Feature |
+| --- | --- |
+| `catppuccin` | Theme |
+| `lualine` / `heirline` | Status line |
+| `bufferline.nvim` | Tabline |
+| `which-key` | Keybinding helper |
+| `vim-illuminate` | Word highlighting |
+| `todo-comments` | Highlight TODO / FIXME |
+| `spectre.nvim` | Search and replace project-wide |
+
+### 📌 Utilities
+
+| Command | Action |
+| --- | --- |
+| `:checkhealth` | Validate setup |
+| `:Lazy sync` | Sync plugins |
+| `:Telescope keymaps` | Browse key mappings |
+| `:Noice` | View message history |
 
 ---
 
-## 🛠️ Troubleshooting
-
-### 🐛 `gh.plugin.zsh: no such file or directory: _gh`
-
-If you see this error:
-```
-/Users/yourname/.zinit/snippets/OMZ::plugins--gh/gh.plugin.zsh:14: no such file or directory: /Users/yourname/.cache/zinit/completions/_gh
-```
-
-This means the GitHub CLI completion file is missing. Fix it with this one-liner:
+## 🧼 Cleanup
 
 ```bash
-mkdir -p ~/.cache/zinit/completions && gh completion -s zsh > ~/.cache/zinit/completions/_gh
-```
-
-Then restart your terminal.
-
----
-
-## ⚙️ Configuration Layout
-
-Your shell config is modular:
-
-```
-~/.zshrc                       # Primary config
-~/.zsh/functions/*.zsh         # Custom functions
-~/.zsh/p10k.zsh                # Powerlevel10k theme config
-~/.zinit                       # Plugin manager
-```
-
----
-
-## 🧼 Cleanup Instructions
-
-To fully remove the setup:
-
-```bash
-rm -rf ~/.zshrc ~/.zsh ~/.zinit ~/.p10k.zsh
+rm -rf ~/.config/nvim ~/.local/share/nvim ~/.cache/nvim
 ```
 
 ---
@@ -167,3 +265,4 @@ rm -rf ~/.zshrc ~/.zsh ~/.zinit ~/.p10k.zsh
 ## 📜 License
 
 MIT License
+
