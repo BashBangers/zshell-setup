@@ -16,25 +16,32 @@ This shell config turns your terminal into a **developer cockpit**:
 
 ---
 
-## 📦 What’s Inside?
+## 📁 Repository Structure
 
-- **Plugin Manager**: [Zinit](https://github.com/zdharma-continuum/zinit) with lazy-loading
-- **Prompt Theme**: Powerlevel10k, pre-configured
-- **Plugins via OMZ**: `git`, `aws`, `docker`, `kubectl`, `gh`
-- **Core Enhancements**:
-  - `zsh-autosuggestions` for inline suggestions
-  - `zsh-syntax-highlighting` for live feedback
-  - `fzf` for fuzzy history and tab-completion
-- **Custom Tools**:
-  - `aws-profile`: Show current STS identity
-  - `please`, `push-upstream`, `notes`, `clean-terragrunt`: Developer aliases
+```
+zshell-setup/
+├── .zshrc                    # Entry point to load modular config
+├── zsh/
+│   ├── aliases.zsh           # Alias definitions
+│   ├── functions.zsh         # Prompt, env vars, keybindings
+│   ├── plugins.zsh           # Plugin loading via Zinit
+│   └── functions/            # Modular shell functions
+│       ├── aws-profile.zsh
+│       ├── aws-ssh.zsh
+│       ├── aws-scp.zsh
+│       ├── sshquick.zsh
+│       ├── scpquick.zsh
+│       └── update-zsh.zsh
+├── setup_zsh.sh              # Bootstrap setup script
+└── README.md
+```
 
 ---
 
 ## 🛠️ Installation
 
 ```bash
-git clone https://github.com/your-user/zshell-setup.git
+git clone https://github.com/BashBangers/zshell-setup.git
 cd zshell-setup
 chmod +x setup_zsh.sh
 ./setup_zsh.sh
@@ -51,7 +58,16 @@ aws-profile                 # Uses current AWS_PROFILE
 aws-profile --profile dev  # Uses specified named profile
 ```
 
-It will alert if your credentials are expired or invalid and prompt re-auth via AWS SSO.
+---
+
+## 💬 Key Features
+
+- FZF-powered `Ctrl+R` history recall
+- ⌥← / ⌥→ word-based motion
+- Prefix-aware history via ↑ / ↓
+- Prompt includes AWS profile & Git branch
+- `aws-ssh`, `aws-scp`, and `sshquick` for fast cloud access
+- Git helpers, Terraform cleanup, `notes` launcher
 
 ---
 
@@ -59,50 +75,32 @@ It will alert if your credentials are expired or invalid and prompt re-auth via 
 
 📘 Full version: [Zsh Developer Shell Cheat Sheet (Notion)](https://tangible-hoverfly-cc7.notion.site/Zsh-Developer-Shell-Cheat-Sheet-6ed44c36c3bf432e9939503ab0e54d02?pvs=74)
 
-### 🔍 History Navigation
+### ✨ Quick Keybindings
 
-| Key / Command | Action |
-|---------------|--------|
-| ↑ / ↓         | Prefix-aware recall |
-| `Ctrl + R`    | Fuzzy history search (FZF) |
-| `!!` / `!n` / `!foo` | Re-run previous, numbered, or matching command |
-
-### 🗂 Word & Line Editing
-
-| Key           | Action |
-|---------------|--------|
-| `⌥ ← / →`     | Move by word |
-| `⌥ ⌫` / `Ctrl+W` | Delete word backward |
-| `Ctrl+A/E`    | Line start / end |
-| `Ctrl+U/K`    | Delete before / after cursor |
-
-### 📁 Directory Shortcuts
-
-| Command       | Description |
-|---------------|-------------|
-| `cd`, `cd -`  | Standard and previous dir |
-| `..`, `...`   | Go up 1 or 2 levels (via alias) |
-| `wd add dev`  | Save current dir as `dev` |
-| `wd dev`      | Jump to saved dir (via zsh-wd) |
+| Shortcut      | Action                                     |
+|---------------|--------------------------------------------|
+| `Ctrl+R`      | Fuzzy reverse history (via `fzf`)          |
+| `↑ / ↓`       | Prefix-aware history search                |
+| `⌥← / ⌥→`     | Word-level movement (Alt + arrow keys)     |
+| `please`      | Sudo alias                                 |
+| `push-upstream` | Git push current branch to upstream      |
 
 ### 💬 Aliases & Functions
 
 | Alias / Func       | Action |
 |--------------------|--------|
 | `ll`               | `ls -laFh --group-directories-first` |
-| `please`           | Shortcut for `sudo` |
 | `notes foo`        | Launch Neovim to `:Note foo` |
-| `push-upstream`    | Git push and set upstream |
 | `clean-terragrunt` | Remove `.terraform.lock.hcl` and `.terragrunt-cache` |
 | `aws-profile`      | Show AWS caller identity |
+| `aws-ssh`          | SSH to EC2 via SSM |
+| `aws-scp`          | Copy files using SSM |
+| `sshquick`         | SSH to configured host |
+| `scpquick`         | SCP to configured host |
 
-### 🌐 Prompt Details
+---
 
-- Git branch shown with ` branch`
-- AWS profile displayed as `AWS: (profile)`
-- Prompt is theme-aware via Powerlevel10k
-
-### 🔌 Plugin Highlights
+## 🧩 Plugin Highlights
 
 | Plugin                  | Purpose |
 |-------------------------|---------|
@@ -111,48 +109,6 @@ It will alert if your credentials are expired or invalid and prompt re-auth via 
 | `fzf` + `fzf-tab`       | Fuzzy finder UI |
 | OMZ plugins             | Git, Docker, AWS, etc. |
 | Powerlevel10k           | Responsive and rich prompt |
-
-### 🧩 Shell Optimizations
-
-| Feature         | Setting |
-|-----------------|---------|
-| Autoenv         | Load `.env` on `cd` |
-| Shared history  | `setopt share_history` |
-| Auto-correct    | `setopt correct` |
-| Key introspect  | `bindkey -P` |
-| Shell config    | `source ~/.zshrc` or `exec zsh` |
-
----
-
-## 🛠️ Troubleshooting
-
-### 🐛 `gh.plugin.zsh: no such file or directory: _gh`
-
-If you see this error:
-```
-/Users/yourname/.zinit/snippets/OMZ::plugins--gh/gh.plugin.zsh:14: no such file or directory: /Users/yourname/.cache/zinit/completions/_gh
-```
-
-Fix it with this:
-
-```bash
-mkdir -p ~/.cache/zinit/completions && gh completion -s zsh > ~/.cache/zinit/completions/_gh
-```
-
-Then restart your terminal.
-
----
-
-## ⚙️ Configuration Layout
-
-Your shell config is modular:
-
-```
-~/.zshrc                       # Primary config
-~/.zsh/functions/*.zsh         # Custom functions
-~/.zsh/p10k.zsh                # Powerlevel10k theme config
-~/.zinit                       # Plugin manager
-```
 
 ---
 
