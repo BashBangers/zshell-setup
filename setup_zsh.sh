@@ -41,14 +41,29 @@ install_dependencies() {
   if [[ "$OS" == "macOS" ]]; then
     brew update || log_warn "brew update failed"
 
-    for pkg in zsh git fzf coreutils gnu-sed gnupg gawk fd ripgrep bat eza pyenv neovim terraform awscli gh; do
+    for pkg in zsh git fzf coreutils gnu-sed gnupg gawk fd ripgrep bat eza pyenv neovim terraform awscli gh tfenv cookiecutter; do
       brew install "$pkg" || log_warn "Failed to install $pkg"
     done
 
+    # Install and pin Terraform
+    if ! command -v terraform &>/dev/null; then
+      tfenv install 1.3.7 || log_warn "tfenv failed to install Terraform 1.3.7"
+      tfenv use 1.3.7 || log_warn "tfenv failed to activate Terraform"
+    fi
+
+    # Install Terragrunt
+    log_info "Downloading Terragrunt..."
+    curl -Lo /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.53.2/terragrunt_darwin_arm64 || log_warn "Terragrunt download failed. Try running this command with sudo."
+    chmod +x /usr/local/bin/terragrunt 2>/dev/null || log_warn "Permission denied. Please run: sudo chmod +x /usr/local/bin/terragrunt"
+
+    # Install SOPS
+    log_info "Downloading SOPS..."
+    curl -Lo /usr/local/bin/sops https://github.com/getsops/sops/releases/download/v3.7.3/sops-v3.7.3.darwin.arm64 || log_warn "SOPS download failed. Try running this command with sudo."
+    chmod +x /usr/local/bin/sops 2>/dev/null || log_warn "Permission denied. Please run: sudo chmod +x /usr/local/bin/sops"
+
   else
     sudo apt update || log_warn "apt update failed"
-    sudo apt install -y \
-      zsh git fzf coreutils sed gnupg gawk fd-find ripgrep bat eza pyenv neovim terraform awscli gh || log_warn "Some packages failed to install"
+    sudo apt install -y       zsh git fzf coreutils sed gnupg gawk fd-find ripgrep bat eza pyenv neovim terraform awscli gh || log_warn "Some packages failed to install"
 
     mkdir -p ~/.local/bin
     ln -sf "$(which fdfind)" ~/.local/bin/fd
@@ -114,4 +129,3 @@ copy_zsh_configs
 setup_powerlevel10k
 validate_plugins
 wrap_up
-
