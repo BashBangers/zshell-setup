@@ -110,7 +110,40 @@ aws-profile --profile dev  # Uses specified named profile
 | OMZ plugins             | Git, Docker, AWS, etc. |
 | Powerlevel10k           | Responsive and rich prompt |
 
+
 ---
+
+## 🤖 GitHub Copilot CLI Integration
+
+This Zsh setup includes a helper module for working with [GitHub Copilot CLI](https://github.com/github/copilot-cli) from your terminal.
+
+### ✅ Requirements
+
+- GitHub CLI (`gh`)
+- GitHub Copilot extension for GH CLI
+
+```bash
+gh auth login
+gh extension install github/gh-copilot
+```
+
+### 🧩 Zsh Integration
+
+If you have `~/.zsh/copilot.zsh`, it defines:
+
+| Command / Alias     | Description                                     |
+|---------------------|-------------------------------------------------|
+| `copilot-suggest`   | Generate a command (alias: `cs`)                |
+| `copilot-explain`   | Explain a command (alias: `ce`)                 |
+| `copilot-status`    | Show Copilot CLI version and auth info          |
+
+To enable:
+
+```zsh
+[[ -f ~/.zsh/copilot.zsh ]] && source ~/.zsh/copilot.zsh
+```
+
+
 
 ## 🧼 Cleanup Instructions
 
