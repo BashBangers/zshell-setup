@@ -110,7 +110,6 @@ aws-profile --profile dev  # Uses specified named profile
 | OMZ plugins             | Git, Docker, AWS, etc. |
 | Powerlevel10k           | Responsive and rich prompt |
 
-
 ---
 
 ## 🤖 GitHub Copilot CLI Integration
@@ -143,7 +142,21 @@ To enable:
 [[ -f ~/.zsh/copilot.zsh ]] && source ~/.zsh/copilot.zsh
 ```
 
+---
 
+## 🧩 Orgmode CLI Capture Integration
+
+This setup includes an optional helper function for adding Org-mode tasks directly from your terminal:
+
+```bash
+org_capture "Fix auth proxy bug" :dev:infra: --deadline=2025-06-01
+```
+
+This appends a `TODO` with optional tags and deadline to `~/notes/inbox.org`.
+
+**Pre-requirements:** [nvim-setup](https://github.com/BashBangers/nvim-setup) must be installed to manage the Org files.
+
+---
 
 ## 🧼 Cleanup Instructions
 
